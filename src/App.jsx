@@ -55,7 +55,7 @@ class App extends Component {
     }
   }
 
-  deletePlayer(name, e) {
+  deletePlayer(e) {
     const player = e.target.dataset.name;
     console.log(player);
     const index = this.state.players.indexOf(player);
@@ -73,7 +73,7 @@ class App extends Component {
         <GlobalStyle />
         <Title>Tourney Mint</Title>
         <PlayerEntry handleNameChange={(e)=>{this.handleNameChange(e)}} handleSubmit={(e)=>{this.handleSubmit(e)}} new={this.state.new} />
-        <Brackets players={this.state.players} size={this.state.exponent === null ? 0 : 2**this.state.exponent} deletePlayer={(e) => {this.deletePlayer(name, e)}} />
+        <Brackets players={this.state.players} size={this.state.exponent === null ? 0 : 2**this.state.exponent} deletePlayer={(e) => {this.deletePlayer(e)}} />
       </div>
     );
   }
