@@ -9,15 +9,15 @@ const Label = styled.label`
 `;
 
 const Button = styled.button`
-	background-color:#3a754a;
-	border-radius:28px;
-	border:1px solid #18ab29;
-	display:inline-block;
-	color:#ffffff;
-	padding:3px 8px;
-	text-decoration:none;
+	background-color: darkgreen;
+	border-radius: 28px;
+	border: 1px solid #18ab29;
+	display: inline-block;
+	color: white;
+	padding: 3px 8px;
+	text-decoration: none;
   &:hover {
-	background-color:#5cbf2a;
+	background-color: forestgreen;
   }
   &:focus {
     outline: 0;

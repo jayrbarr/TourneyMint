@@ -65,7 +65,7 @@ function changeIntoBye(seed, numPlayers)
     return seed <= numPlayers ?  seed : null;
 }
 
-const Brackets = ({ size, players, deletePlayer }) => {
+const Brackets = ({ size, players, deletePlayer, started }) => {
   let right = false;
   let brackets = [];
   let numPlayers = players.length;
@@ -73,7 +73,7 @@ const Brackets = ({ size, players, deletePlayer }) => {
   let seedings = getBracket(numPlayers, rounds);
   for (let i = 0; i < size*2; i++) {
     const checkSeed = Math.floor(i/2);
-    const pushHTML = seedings[checkSeed] && players[seedings[checkSeed]-1] ? <Player name={players[seedings[checkSeed]-1]} seed={seedings[checkSeed]} deletePlayer={deletePlayer}/> : <span><b>BYE</b></span>;
+    const pushHTML = seedings[checkSeed] && players[seedings[checkSeed]-1] ? <Player name={players[seedings[checkSeed]-1]} seed={seedings[checkSeed]} started={started} deletePlayer={deletePlayer}/> : <span><b>BYE</b></span>;
     if (i%2) {
       brackets.push(<Bracket key={i.toString()} right={right} empty={false} row={i+1} column="1">{pushHTML}</Bracket>);
       if (!right) brackets.push(<Bracket key={(i+1).toString()} right={true} empty={true} row={i+2} column="1"></Bracket>)
@@ -93,7 +93,9 @@ const Brackets = ({ size, players, deletePlayer }) => {
   }
   let final = rounds ? rounds : 1;
   if (size) brackets.push(<Top key={size*(2+rounds)+1} row={2+2**final} column={final+1} />);
-  return <Grid rows={size*2} columns={rounds}>{brackets}</Grid>
+  return (
+  <Grid rows={size*2} columns={rounds}>{brackets}</Grid>
+  );
 }
 
 export default Brackets;

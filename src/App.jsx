@@ -2,6 +2,7 @@ import React, { Component} from "react";
 import PlayerEntry from "./PlayerEntry.jsx";
 import Brackets from "./Brackets.jsx";
 import styled, { createGlobalStyle } from 'styled-components';
+import Start from "./Start.jsx";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -10,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
   html {
     background-color: mintcream;
     color: forestgreen;
+    font-family: Arial, Helvetica, sans-serif;
   }
 `
 
@@ -24,6 +26,7 @@ class App extends Component {
       players: [],
       new: '',
       exponent: null,
+      started: false,
     }
   }
 
@@ -57,7 +60,6 @@ class App extends Component {
 
   deletePlayer(e) {
     const player = e.target.dataset.name;
-    console.log(player);
     const index = this.state.players.indexOf(player);
     const players = this.state.players.slice(0, index).concat(this.state.players.slice(index+1));
     const exponent = this.getExponent(players.length);
@@ -67,13 +69,19 @@ class App extends Component {
     })
   }
 
+  startTourney(e) {
+    this.setState({
+      started: true,
+    })
+  }
+
   render(){
     return(
       <div>
         <GlobalStyle />
         <Title>Tourney Mint</Title>
-        <PlayerEntry handleNameChange={(e)=>{this.handleNameChange(e)}} handleSubmit={(e)=>{this.handleSubmit(e)}} new={this.state.new} />
-        <Brackets players={this.state.players} size={this.state.exponent === null ? 0 : 2**this.state.exponent} deletePlayer={(e) => {this.deletePlayer(e)}} />
+        {!this.state.started && <><Start startTourney={(e)=>{this.startTourney(e)}} /><PlayerEntry handleNameChange={(e)=>{this.handleNameChange(e)}} handleSubmit={(e)=>{this.handleSubmit(e)}} new={this.state.new} /></>}
+        <Brackets players={this.state.players} size={this.state.exponent === null ? 0 : 2**this.state.exponent} started={this.state.started} deletePlayer={(e) => {this.deletePlayer(e)}} />
       </div>
     );
   }
