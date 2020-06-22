@@ -22,7 +22,9 @@ const Player = ({
 }) => (
   <span>
     {name}
+    <span>    </span>
     {seed}
+    <span>  </span>
     {!started && <Delete data-name={name} onClick={deletePlayer} />}
   </span>
 );
