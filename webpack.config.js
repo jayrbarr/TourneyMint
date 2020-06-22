@@ -38,7 +38,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const workboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: './src/index.jsx',
   resolve: {
     extensions: ['*', '.js', '.jsx'],
