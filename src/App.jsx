@@ -1,8 +1,9 @@
-import React, { Component} from "react";
-import PlayerEntry from "./PlayerEntry.jsx";
-import Brackets from "./Brackets.jsx";
+import React, { Component } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import Start from "./Start.jsx";
+
+import PlayerEntry from './PlayerEntry';
+import Brackets from './Brackets';
+import Start from './Start';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -13,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
     color: forestgreen;
     font-family: Arial, Helvetica, sans-serif;
   }
-`
+`;
 
 const Title = styled.h1`
   color: darkgreen;
@@ -24,64 +25,82 @@ class App extends Component {
     super(props);
     this.state = {
       players: [],
-      new: '',
+      newPlayer: '',
       exponent: null,
       started: false,
-    }
+    };
   }
 
   handleNameChange(e) {
     this.setState({
-      new: e.target.value,
-    })
-  }
-
-  getExponent(size) {
-    let exponent = 1;
-    while (size > (2**exponent)) {
-      exponent++;
-    }
-    return exponent;
+      newPlayer: e.target.value,
+    });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    if (this.state.new.length > 0) {
-      const newPlayers = this.state.players;
-      newPlayers.push(this.state.new);
-      const newExponent = this.getExponent(newPlayers.length);
+    const getExponent = (size) => {
+      let exponent = 1;
+      while (size > (2 ** exponent)) {
+        exponent += 1;
+      }
+      return exponent;
+    };
+    const { newPlayer } = this.state;
+    if (newPlayer.length > 0) {
+      const { players } = this.state;
+      players.push(newPlayer);
+      const newExponent = getExponent(players.length);
       this.setState({
-        players: newPlayers,
+        players,
         exponent: newExponent,
-        new: '',
-      })
+        newPlayer: '',
+      });
     }
   }
 
   deletePlayer(e) {
     const player = e.target.dataset.name;
-    const index = this.state.players.indexOf(player);
-    const players = this.state.players.slice(0, index).concat(this.state.players.slice(index+1));
-    const exponent = this.getExponent(players.length);
+    const { players } = this.state;
+    const index = players.indexOf(player);
+    const playersList = players.slice(0, index).concat(players.slice(index + 1));
+    const exponent = this.getExponent(playersList.length);
     this.setState({
-      players,
+      players: playersList,
       exponent,
-    })
+    });
   }
 
-  startTourney(e) {
+  startTourney() {
     this.setState({
       started: true,
-    })
+    });
   }
 
-  render(){
-    return(
+  render() {
+    const {
+      started, players, exponent, newPlayer,
+    } = this.state;
+    return (
       <div>
         <GlobalStyle />
         <Title>Tourney Mint</Title>
-        {!this.state.started && <><Start startTourney={(e)=>{this.startTourney(e)}} /><PlayerEntry handleNameChange={(e)=>{this.handleNameChange(e)}} handleSubmit={(e)=>{this.handleSubmit(e)}} new={this.state.new} /></>}
-        <Brackets players={this.state.players} size={this.state.exponent === null ? 0 : 2**this.state.exponent} started={this.state.started} deletePlayer={(e) => {this.deletePlayer(e)}} />
+        {!started && (
+        <>
+          <Start startTourney={(e) => { this.startTourney(e); }} />
+          <PlayerEntry
+            handleNameChange={(e) => { this.handleNameChange(e); }}
+            handleSubmit={(e) => { this.handleSubmit(e); }}
+            newPlayer={newPlayer}
+          />
+        </>
+        )}
+        <Brackets
+          players={players}
+          size={exponent === null ? 0 : 2 ** exponent}
+          started={started}
+          deletePlayer={(e) => { this.deletePlayer(e); }}
+        />
       </div>
     );
   }

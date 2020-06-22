@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Button = styled.button`
 margin-bottom: 10px;
@@ -18,8 +19,12 @@ background-color: forestgreen;
 }
 `;
 
-const Start = ({ startTourney }) =>  (
-  <Button onClick={startTourney} >Start Tournament</Button>
-)
+const Start = ({ startTourney }) => (
+  <Button onClick={startTourney}>Start Tournament</Button>
+);
+
+Start.propTypes = {
+  startTourney: PropTypes.func.isRequired,
+};
 
 export default Start;

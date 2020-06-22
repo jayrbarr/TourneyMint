@@ -1,5 +1,5 @@
 {
-    "plugins": [
+    "plugins": [ 
         [
             "syntax-dynamic-import"
         ],
@@ -7,7 +7,7 @@
             "babel-plugin-styled-components"
         ]
     ],
-    "presets": [
+    "presets": [ "airbnb",
         [
             "@babel/preset-env",
             {

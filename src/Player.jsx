@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Delete = styled.span`
   background-color: darkgreen;
@@ -16,9 +17,21 @@ const Delete = styled.span`
   }
 `;
 
-const Player = ({ name, seed, deletePlayer, started }) => {
+const Player = ({
+  name, seed, deletePlayer, started,
+}) => (
+  <span>
+    {name}
+    {seed}
+    {!started && <Delete data-name={name} onClick={deletePlayer} />}
+  </span>
+);
 
-return <span>{name}  {seed}  {!started && <Delete data-name={name} onClick={deletePlayer} />}</span>
-}
+Player.propTypes = {
+  name: PropTypes.string.isRequired,
+  seed: PropTypes.number.isRequired,
+  deletePlayer: PropTypes.func.isRequired,
+  started: PropTypes.bool.isRequired,
+};
 
 export default Player;

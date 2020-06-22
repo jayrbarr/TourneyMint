@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.js --watch",
     "dev-start": "nodemon server",
     "start": "node server"
   },
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/jayrbarr/tourney-mint#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "styled-components": "^5.1.1"
@@ -35,7 +36,15 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.10.7",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-preset-airbnb": "^5.0.0",
     "css-loader": "^3.5.3",
+    "eslint": "^7.3.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.4",
     "mini-css-extract-plugin": "^0.9.0",
     "nodemon": "^2.0.4",
     "style-loader": "^1.2.1",
