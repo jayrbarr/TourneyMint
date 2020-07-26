@@ -60,7 +60,7 @@ const getBracket = (numPlayers, rounds) => {
 };
 
 const Brackets = ({
-  size, players, deletePlayer, started,
+  size, players, deletePlayer, started, advancePlayer,
 }) => {
   let right = false;
   const brackets = [];
@@ -76,12 +76,14 @@ const Brackets = ({
           seed={seedings[checkSeed]}
           started={started}
           deletePlayer={deletePlayer}
+          advancePlayer={advancePlayer}
         />
       )
       : <span><b>BYE</b></span>;
     if (i % 2) {
       brackets.push(
         <Bracket
+          className="player_grid"
           key={i.toString()}
           right={right}
           empty={false}
@@ -142,7 +144,7 @@ const Brackets = ({
     />);
   }
   return (
-    <Grid rows={size * 2} columns={rounds}>{brackets}</Grid>
+    <Grid rows={size * 2} columns={rounds} role="button" tabIndex={0} onClick={advancePlayer} onKeyPress={advancePlayer}>{brackets}</Grid>
   );
 };
 
@@ -151,6 +153,11 @@ Brackets.propTypes = {
   players: PropTypes.arrayOf(PropTypes.string).isRequired,
   deletePlayer: PropTypes.func.isRequired,
   started: PropTypes.bool.isRequired,
+  advancePlayer: PropTypes.func,
+};
+
+Brackets.defaultProps = {
+  advancePlayer: null,
 };
 
 export default Brackets;

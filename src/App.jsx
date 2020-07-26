@@ -21,23 +21,20 @@ const Title = styled.h1`
 `;
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      players: [],
-      newPlayer: '',
-      exponent: null,
-      started: false,
-    };
+  state = {
+    players: [],
+    newPlayer: '',
+    exponent: null,
+    started: false,
   }
 
-  handleNameChange(e) {
+  handleNameChange = (e) => {
     this.setState({
       newPlayer: e.target.value,
     });
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     const getExponent = (size) => {
       let exponent = 1;
@@ -59,7 +56,7 @@ class App extends Component {
     }
   }
 
-  deletePlayer(e) {
+  deletePlayer = (e) => {
     const player = e.target.dataset.name;
     const { players } = this.state;
     const index = players.indexOf(player);
@@ -71,35 +68,56 @@ class App extends Component {
     });
   }
 
-  startTourney() {
+  startTourney = () => {
     this.setState({
       started: true,
     });
+  }
+
+  advancePlayer = (e) => {
+    e.persist();
+    console.dir(e.target.classList);
+    if(e.target.classList.contains('player_grid')) {
+      let row = parseInt(getComputedStyle(e.target)['grid-row-start'], 10);
+      let column = parseInt(getComputedStyle(e.target)['grid-column-start'], 10);
+      const player = e.target.innerText;
+      const gap = 2**(column-1);
+      if (column++ <= this.state.exponent) {
+        if ((row/2)%2) {
+          row += gap;
+        } else {
+          row -= gap
+        }
+        console.log(row, column, player);
+      }
+    }
   }
 
   render() {
     const {
       started, players, exponent, newPlayer,
     } = this.state;
+    const startFunctions = started ? { advancePlayer: this.advancePlayer } : null;
     return (
       <div>
         <GlobalStyle />
         <Title>Tourney Mint</Title>
         {!started && (
-        <>
-          <Start startTourney={(e) => { this.startTourney(e); }} />
-          <PlayerEntry
-            handleNameChange={(e) => { this.handleNameChange(e); }}
-            handleSubmit={(e) => { this.handleSubmit(e); }}
-            newPlayer={newPlayer}
-          />
-        </>
+          <>
+            <Start startTourney={this.startTourney} />
+            <PlayerEntry
+              handleNameChange={this.handleNameChange}
+              handleSubmit={this.handleSubmit}
+              newPlayer={newPlayer}
+            />
+          </>
         )}
         <Brackets
           players={players}
           size={exponent === null ? 0 : 2 ** exponent}
           started={started}
-          deletePlayer={(e) => { this.deletePlayer(e); }}
+          deletePlayer={this.deletePlayer}
+          {...startFunctions}
         />
       </div>
     );
