@@ -36,21 +36,21 @@ const Grid = styled.div`
   grid-template: repeat(${(props) => props.rows}, 30px) / repeat(${(props) => (props.columns ? props.columns + 1 : 2)}, 120px);
 `;
 
-const changeIntoBye = (seed, numPlayers) => (seed <= numPlayers ? seed : null);
+const byeOrSeed = (seed, numPlayers) => (seed <= numPlayers ? seed : null);
 
 const getBracket = (numPlayers, rounds) => {
-  let matches = [[1, 2]];
+  let matches = numPlayers > 1 ? [[1, 2]] : [[1, null]];
 
   for (let round = 1; round < rounds; round += 1) {
     const roundMatches = [];
     const sum = 2 ** (round + 1) + 1;
 
     for (let i = 0; i < matches.length; i += 1) {
-      let home = changeIntoBye(matches[i][0], numPlayers);
-      let away = changeIntoBye(sum - matches[i][0], numPlayers);
+      let home = byeOrSeed(matches[i][0], numPlayers);
+      let away = byeOrSeed(sum - matches[i][0], numPlayers);
       roundMatches.push([home, away]);
-      home = changeIntoBye(sum - matches[i][1], numPlayers);
-      away = changeIntoBye(matches[i][1], numPlayers);
+      home = byeOrSeed(sum - matches[i][1], numPlayers);
+      away = byeOrSeed(matches[i][1], numPlayers);
       roundMatches.push([home, away]);
     }
     matches = roundMatches;
@@ -69,7 +69,7 @@ const Brackets = ({
   const seedings = getBracket(numPlayers, rounds);
   for (let i = 0; i < size * 2; i += 1) {
     const checkSeed = Math.floor(i / 2);
-    const pushHTML = seedings[checkSeed] && players[seedings[checkSeed] - 1]
+    const pushHTML = seedings[checkSeed]
       ? (
         <Player
           name={players[seedings[checkSeed] - 1]}

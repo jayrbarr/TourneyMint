@@ -1,3 +1,4 @@
+/* eslint-disable react/state-in-constructor */
 import React, { Component } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 
@@ -75,20 +76,19 @@ class App extends Component {
   }
 
   advancePlayer = (e) => {
-    e.persist();
-    console.dir(e.target.classList);
-    if(e.target.classList.contains('player_grid')) {
+    const { exponent } = this.state;
+    if (e.target.classList.contains('player_grid')) {
       let row = parseInt(getComputedStyle(e.target)['grid-row-start'], 10);
       let column = parseInt(getComputedStyle(e.target)['grid-column-start'], 10);
       const player = e.target.innerText;
-      const gap = 2**(column-1);
-      if (column++ <= this.state.exponent) {
-        if ((row/2)%2) {
+      const gap = 2 ** (column - 1);
+      if (column <= exponent) {
+        column += 1;
+        if ((row / 2) % 2) {
           row += gap;
         } else {
-          row -= gap
+          row -= gap;
         }
-        console.log(row, column, player);
       }
     }
   }
@@ -97,7 +97,6 @@ class App extends Component {
     const {
       started, players, exponent, newPlayer,
     } = this.state;
-    const startFunctions = started ? { advancePlayer: this.advancePlayer } : null;
     return (
       <div>
         <GlobalStyle />
@@ -117,7 +116,7 @@ class App extends Component {
           size={exponent === null ? 0 : 2 ** exponent}
           started={started}
           deletePlayer={this.deletePlayer}
-          {...startFunctions}
+          advancePlayer={started ? this.advancePlayer : null}
         />
       </div>
     );
